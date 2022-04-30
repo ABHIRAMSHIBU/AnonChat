@@ -5,8 +5,6 @@ from Crypto.Cipher import PKCS1_v1_5 as Cipher_PKCS1_v1_5
 from Crypto.Signature.pkcs1_15 import PKCS115_SigScheme
 from Crypto.Hash import SHA256
 
-import socket
-
 
 class AnonKeys:
     def __init__(self, file_name):
