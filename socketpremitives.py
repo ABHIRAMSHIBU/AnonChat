@@ -21,10 +21,10 @@ class CommUtils:
         print(data)
         torurl, enc_message, signature, public_key = data
         public_key = RSA.import_key(public_key)
-        if(cp.verify(enc_message, signature, public_key)):
+        if(cp.verify(public_key, signature, enc_message)):
             dec_message = cp.decrypt(self.askey.private_key, enc_message)
             print(dec_message)
-            self.insertDB(dec_message, public_key, torurl, self.db)
+            self.insertDB(dec_message, public_key, torurl)
             print("Done!")
             return True
         else:
@@ -46,7 +46,7 @@ class CommUtils:
                         data = conn.recv(1024)
                         if not data:
                             break
-                        if(self.process_message(data, self.db)):
+                        if(self.process_message(data)):
                             conn.send(b"Success")
                         else:
                             conn.send(b"Failure")
@@ -54,6 +54,9 @@ class CommUtils:
             print("Bye..")
         except Exception as e:
             print(e)
+            # print stack trace
+            import traceback
+            traceback.print_exc()
             return False
 
     def send_message(self, public_key, torurl, message):

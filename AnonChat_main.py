@@ -44,7 +44,7 @@ def UI_Main():
                 elif(inp == "3"):
                     contact = input("Contact url:")
                     db[contact] = {"messages": [], "pubkey": None}
-                    inp = input("PublicKey:").strip('\' ').encode()
+                    inp = input("PublicKey:").strip('\ ').encode()
                     key = None
                     try:
                         key = RSA.import_key(inp)
@@ -61,7 +61,7 @@ def UI_Main():
                     print("Try again!")
             else:
                 if(chosen_person):
-                    sockp.send_message(db[chosen_person]["pubkey"],
+                    sockp.send_message(askey.public_key,
                                        chosen_person, inp)
                 else:
                     print("No selected contact, please select one.")

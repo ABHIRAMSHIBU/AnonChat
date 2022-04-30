@@ -31,6 +31,9 @@ class AnonKeys:
                 return prv, pub
             except Exception as e:
                 print(e)
+                # print stack trace
+                import traceback
+                traceback.print_exc()
                 return None
         else:
             return None
