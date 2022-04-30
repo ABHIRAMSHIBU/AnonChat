@@ -18,7 +18,7 @@ def UI_Main():
     chosen_person = None
     while(True):
         try:
-            inp = input(">").strip()
+            inp = input("You:").strip()
             if(inp == "$help"):
                 print("Help Menu - Conrgatz you have discovered help menu")
                 print("1) $menu for menu")
@@ -61,7 +61,7 @@ def UI_Main():
                     print("Try again!")
             else:
                 if(chosen_person):
-                    sockp.send_message(askey.public_key,
+                    sockp.send_message(askey.public_key, db[chosen_person]["pubkey"],
                                        chosen_person, inp)
                 else:
                     print("No selected contact, please select one.")

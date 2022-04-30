@@ -18,14 +18,15 @@ class CommUtils:
     def process_message(self, data):
         # Format [torurl,enc_message,signature,public_key]
         data = pickle.loads(data)
-        print(data)
+        # print(data)
         torurl, enc_message, signature, public_key = data
         public_key = RSA.import_key(public_key)
         if(cp.verify(public_key, signature, enc_message)):
             dec_message = cp.decrypt(self.askey.private_key, enc_message)
-            print(dec_message)
+            print("\r    "+"\r"+dec_message.decode()+"\n"+"You:", end="")
+            # print > in the next line and take input from same line
             self.insertDB(dec_message, public_key, torurl)
-            print("Done!")
+            # print("Done!")
             return True
         else:
             print("Verification Failure")
@@ -59,13 +60,13 @@ class CommUtils:
             traceback.print_exc()
             return False
 
-    def send_message(self, public_key, torurl, message):
+    def send_message(self, self_public_key, sender_public_key, torurl, message):
         remote_host = torurl  # URL for reciver
         PORT = 9999   # Port for AnonChat on reciever
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             s.connect((remote_host, PORT))
-            enc_message = cp.encrypt(public_key, message.encode())
+            enc_message = cp.encrypt(sender_public_key, message.encode())
             signature = cp.sign(self.askey.private_key, enc_message)
             s.send(pickle.dumps(
-                [self.HOST, enc_message, signature, public_key.export_key()]))
+                [self.HOST, enc_message, signature, self_public_key.export_key()]))
             s.close()
