@@ -64,6 +64,10 @@ def decrypt(key, enc_data):
         key - Key for decryption of message
         enc - Encrypted message
     '''
+    if(key is None):
+        print("Warning: anoncrypto.py: key is None")
+    if(enc_data is None):
+        print("Warning: anoncrypto.py: enc_data is None")
     data = Cipher_PKCS1_v1_5.new(key).decrypt(enc_data, None)
     return data
 
@@ -88,4 +92,7 @@ def verify(publickey, signature, enc_message):
         verifier.verify(digest, signature)
         return True
     except:
+        # print stack trace
+        import traceback
+        traceback.print_exc()
         return False
