@@ -1,6 +1,7 @@
 import socket
 import anoncrypto as cp
 import pickle
+import traceback
 from Crypto.PublicKey import RSA
 
 
@@ -56,7 +57,6 @@ class CommUtils:
         except Exception as e:
             print(e)
             # print stack trace
-            import traceback
             traceback.print_exc()
             return False
 
