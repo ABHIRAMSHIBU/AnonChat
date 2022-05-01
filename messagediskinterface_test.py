@@ -1,3 +1,4 @@
+from unicodedata import name
 import unittest
 import os
 import anoncrypto as cp
@@ -18,14 +19,14 @@ class MessageDiskInterfaceTest(unittest.TestCase):
 
     def test_verifyDecrypt(self):
         # Key generation
-        if(os.path.exists("test_messages.log")):
-            os.remove("test_messages.log")
+        if(os.path.exists("test1_messages.log")):
+            os.remove("test1_messages.log")
         db={}
         askey = cp.AnonKeys(file_name="userkey.pickle")
         askey2 = cp.AnonKeys(file_name="userkey_test.pickle")
         askey.get_RSA_key()
         askey2.get_RSA_key()
-        self.mdi = MessageDiskInterface(db,askey.private_key,"test_messages.log")
+        self.mdi = MessageDiskInterface(db,askey.private_key,"test1_messages.log")
         #create a message
         message = "Hello World".encode()
         #encrypt the message
@@ -36,15 +37,16 @@ class MessageDiskInterfaceTest(unittest.TestCase):
         self.assertTrue(self.mdi.verifyDecrypt(ciphertext,signature,askey2.public_key) == message)
     # test addEntry
 
-    def test_addEntry(self):
+    def test_add_load_entry(self):
         # Key generation
         # remove file test_messages.log
-        if(os.path.exists("test_messages.log")):
-            os.remove("test_messages.log")
+        if(os.path.exists("test2_messages.log")):
+            os.remove("test2_messages.log")
         db={}
+        olddb = db
         askey = cp.AnonKeys(file_name="userkey.pickle")
         askey.load_RSA_key()
-        self.mdi = MessageDiskInterface(db,askey.private_key,"test_messages.log")
+        self.mdi = MessageDiskInterface(db,askey.private_key,"test2_messages.log")
         priv_gen,pub_gen=askey.generate_RSA_key()
         #create a message
         message = "Hello World".encode()
@@ -58,6 +60,24 @@ class MessageDiskInterfaceTest(unittest.TestCase):
         #check that the message is in the database
         self.assertTrue(self.mdi.db[ip]["pubkey"] == pub_gen)
         self.assertTrue(ciphertext in self.mdi.db[ip]["messages"][0]["enc_message"])
+        self.assertTrue(signature in self.mdi.db[ip]["messages"][0]["signature"])
+        db = {}
+        self.mdi = MessageDiskInterface(db,askey.private_key,"test2_messages.log")
+        self.mdi.loadEntries()
+        self.assertDictEqual(db,olddb)
+
+    #teardown method
+    @classmethod
+    def tearDown(self):
+        # if test2_message.log exists delete it 
+        if(os.path.exists("test2_messages.log")):
+            os.remove("test2_messages.log")
+        # if test1_message.log exists delete it
+        if(os.path.exists("test1_messages.log")):
+            os.remove("test1_messages.log")
+            
+
+        
 
 
 

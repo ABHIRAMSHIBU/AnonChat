@@ -38,12 +38,12 @@ class MessageDiskInterface:
         # self.f.write(signature.decode())
         # U know what? let's do pickle implementation
         # base64 encode before writing pickle
-        self.f.write(base64.encodebytes(pickle.dumps([public_key.export_key().decode(),ip,enc_message,signature,send])).decode())
+        self.f.write(base64.b64encode(pickle.dumps([public_key.export_key().decode(),ip,enc_message,signature,send])).decode())
+        self.f.write("\n")
         if(ip not in self.db):
             self.db[ip] = {"messages": [], "pubkey": public_key}
         self.db[ip]["pubkey"] = public_key
         self.db[ip]["messages"].append({"enc_message":enc_message,"signature":signature,"send_bool":send})        
-        self.f.write("\n")
         self.f.flush()
 
     def verifyDecrypt(self,enc_message,signature,sender_public_key):
@@ -68,7 +68,7 @@ class MessageDiskInterface:
         Loads all the entries from the file in database
         '''
         for line in self.f:
-            data = pickle.loads(base64.decodebytes(line.encode()))
+            data = pickle.loads(base64.b64decode(line.encode()))
             if(len(data)<5):
                 print("MessageDiskInterface.py:Invalid data in file")
                 continue
