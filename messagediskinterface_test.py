@@ -5,17 +5,11 @@ import anoncrypto as cp
 from MessageDiskInterface import MessageDiskInterface
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_v1_5 as Cipher_PKCS1_v1_5
-
-#create the test class
 class MessageDiskInterfaceTest(unittest.TestCase):
     
-    #create class initalizer
     def setUp(self):
         pass
-        #create a new message disk interface
-        # db={}
-        # self.mdi = MessageDiskInterface(db,askey.private_key,"test_messages.log")
-    # test verifyDecrypt
+
 
     def test_verifyDecrypt(self):
         # Key generation
@@ -39,7 +33,6 @@ class MessageDiskInterfaceTest(unittest.TestCase):
 
     def test_add_load_entry(self):
         # Key generation
-        # remove file test_messages.log
         if(os.path.exists("test2_messages.log")):
             os.remove("test2_messages.log")
         db={}
@@ -66,7 +59,6 @@ class MessageDiskInterfaceTest(unittest.TestCase):
         self.mdi.loadEntries()
         self.assertDictEqual(db,olddb)
 
-    #teardown method
     @classmethod
     def tearDown(self):
         # if test2_message.log exists delete it 

@@ -4,10 +4,12 @@ from threading import Thread
 from pprint import pprint
 from Crypto.PublicKey import RSA
 import traceback
+from MessageDiskInterface import MessageDiskInterface
 
 db = {}
 askey = AnonKeys(file_name="userkey.pickle")
 askey.load_RSA_key()
+mdi = MessageDiskInterface(db,askey.private_key)
 
 sockp = socketpremitives.CommUtils(db=db, askey=askey, HOST="192.168.43.3")
 
