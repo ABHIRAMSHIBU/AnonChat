@@ -30,14 +30,14 @@ class CommUtils:
         # Format [torurl,enc_message,signature,public_key]
         data = pickle.loads(data)
         # print(data)
-        torurl, enc_message, signature, public_key = data
-        public_key = RSA.import_key(public_key)
-        if(cp.verify(public_key, signature, enc_message)):
+        torurl, enc_message, signature, sender_public_key = data
+        sender_public_key = RSA.import_key(sender_public_key)
+        if(cp.verify(sender_public_key, signature, enc_message)):
             # TODO: Change this to use self.mdi.verifyDecrypt
             dec_message = cp.decrypt(self.askey.private_key, enc_message)
             print("\r    "+"\r"+dec_message.decode()+"\n"+"You:", end="")
             # print > in the next line and take input from same line
-            self.mdi.addEntry(torurl,peer_host_port[0],enc_message,signature,False)
+            self.mdi.addEntry(sender_public_key,torurl,enc_message,signature,False)
             # self.insertDB(dec_message, public_key, torurl)
             # print("Done!")
             return True
@@ -81,7 +81,7 @@ class CommUtils:
             enc_message = cp.encrypt(reciever_public_key, message.encode())
             # Sign the message with our private key
             signature = cp.sign(self.askey.private_key, enc_message)
-            self.mdi.addEntry(torurl,remote_host,enc_message,signature,True)
+            self.mdi.addEntry(reciever_public_key,torurl,enc_message,signature,True)
             s.send(pickle.dumps(
                 [self.HOST, enc_message, signature, self_public_key.export_key()]))
             s.close()

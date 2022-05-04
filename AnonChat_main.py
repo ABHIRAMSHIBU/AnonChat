@@ -11,7 +11,7 @@ askey = AnonKeys(file_name="userkey.pickle")
 askey.load_RSA_key()
 mdi = MessageDiskInterface(db,askey.private_key)
 
-sockp = socketpremitives.CommUtils(db=db, askey=askey, HOST="192.168.43.3")
+sockp = socketpremitives.CommUtils(db=db, askey=askey, mdi=mdi, HOST="192.168.43.3")
 
 t = Thread(target=sockp.receiver_function)
 t.start()
@@ -54,7 +54,7 @@ def UI_Main():
                         chosen_person = list(db.keys())[0]
                 elif(inp == "2"):
                     if(chosen_person):
-                        pprint(db[chosen_person]["messages"])
+                        pprint([mdi.verifyDecrypt(i['enc_message'],i['signature'],db[chosen_person]["pubkey"]) for i in db[chosen_person]["messages"]])
                     else:
                         print("No selected contact, please select one.")
                 elif(inp == "3"):
