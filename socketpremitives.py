@@ -81,7 +81,9 @@ class CommUtils:
             enc_message = cp.encrypt(reciever_public_key, message.encode())
             # Sign the message with our private key
             signature = cp.sign(self.askey.private_key, enc_message)
-            self.mdi.addEntry(reciever_public_key,torurl,enc_message,signature,True)
+            save_encrypt_message = cp.encrypt(self_public_key, message.encode())
+            save_signature = cp.sign(self.askey.private_key, save_encrypt_message)
+            self.mdi.addEntry(reciever_public_key,torurl,save_encrypt_message,save_signature,True)
             s.send(pickle.dumps(
                 [self.HOST, enc_message, signature, self_public_key.export_key()]))
             s.close()

@@ -54,7 +54,7 @@ def UI_Main():
                         chosen_person = list(db.keys())[0]
                 elif(inp == "2"):
                     if(chosen_person):
-                        pprint([mdi.verifyDecrypt(i['enc_message'],i['signature'],db[chosen_person]["pubkey"]) for i in db[chosen_person]["messages"]])
+                        pprint([mdi.verifyDecrypt(i['enc_message'],i['signature'],db[chosen_person]["pubkey"],i["send_bool"]) for i in db[chosen_person]["messages"]])
                     else:
                         print("No selected contact, please select one.")
                 elif(inp == "3"):

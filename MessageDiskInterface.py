@@ -46,14 +46,19 @@ class MessageDiskInterface:
         self.db[ip]["messages"].append({"enc_message":enc_message,"signature":signature,"send_bool":send})        
         self.f.flush()
 
-    def verifyDecrypt(self,enc_message,signature,sender_public_key):
+    def verifyDecrypt(self,enc_message,signature,sender_public_key,send:bool):
         '''
         cp: CryptoPrimitives object (for verification and decryption)
         enc_message: encrypted message
         signature: signature of message
         sender_public_key: public key of sender - Imported key
         '''
-        if(cp.verify(sender_public_key, signature, enc_message)):
+        verification_status=False
+        if(send):
+            verification_status = cp.verify(self.hostPriv.publickey(),signature,enc_message)
+        else:
+            verification_status = cp.verify(sender_public_key, signature, enc_message)
+        if(verification_status):
             if(self.hostPriv is None):
                 print("Warning: DiskInterface.py: Private key is None")
             if(enc_message is None):
@@ -72,8 +77,9 @@ class MessageDiskInterface:
             if(len(data)<5):
                 print("MessageDiskInterface.py:Invalid data in file")
                 continue
-            data[0] = RSA.import_key(data[0])
-            self.db[data[1]] = {"messages": [], "pubkey": data[0]}
+            if(data[1] not in self.db):
+                self.db[data[1]] = {"messages": [], "pubkey": None}
+                self.db[data[1]]["pubkey"] = RSA.importKey(data[0])
             # Todo add support for time also..
             # New way encrypted message,signature
             self.db[data[1]]["messages"].append({"enc_message":data[2],"signature":data[3],"send_bool":data[4]})
