@@ -35,7 +35,8 @@ class CommUtils:
         if(cp.verify(sender_public_key, signature, enc_message)):
             # TODO: Change this to use self.mdi.verifyDecrypt
             dec_message = cp.decrypt(self.askey.private_key, enc_message)
-            print("\r    "+"\r"+dec_message.decode()+"\n"+"You:", end="")
+            # Everything after \n is the new prompt
+            print("\r                         "+"\r"+torurl+":"+dec_message.decode()+"\n"+self.HOST+"(You):", end="")
             # print > in the next line and take input from same line
             self.mdi.addEntry(sender_public_key,torurl,enc_message,signature,False)
             # self.insertDB(dec_message, public_key, torurl)
