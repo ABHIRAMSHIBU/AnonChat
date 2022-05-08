@@ -87,4 +87,9 @@ class CommUtils:
             self.mdi.addEntry(reciever_public_key,torurl,save_encrypt_message,save_signature,True)
             s.send(pickle.dumps(
                 [self.HOST, enc_message, signature, self_public_key.export_key()]))
+            data = s.recv(1024)
+            if data == b"Success":
+                return True
+            else:
+                return False
             s.close()
