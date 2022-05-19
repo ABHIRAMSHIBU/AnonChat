@@ -28,7 +28,11 @@ class CommUtils:
 
     def process_message(self, data, peer_host_port):
         # Format [torurl,enc_message,signature,public_key]
-        data = pickle.loads(data)
+        try:
+            data = pickle.loads(data)
+        except Exception as e:
+            print(e)
+            return False
         # print(data)
         torurl, enc_message, signature, sender_public_key = data
         sender_public_key = RSA.import_key(sender_public_key)
@@ -58,7 +62,7 @@ class CommUtils:
                     # TODO: Threading might give better performance
                     while True:
                         # Assuming 1024 bytes as max message size
-                        data = conn.recv(1024)
+                        data = conn.recv(5000)
                         if not data:
                             break
                         if(self.process_message(data,conn.getpeername())):

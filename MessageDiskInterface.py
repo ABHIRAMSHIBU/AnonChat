@@ -18,7 +18,7 @@ class MessageDiskInterface:
         '''
         self.db = db
         if not os.path.exists(file) and os.path.exists("checksum.txt"):
-            anonfs_interface("192.168.43.3",9091,restore=True)
+            anonfs_interface("localhost",9091,restore=True)
         self.f = open(file,"a+")
         self.f.seek(0)
         self.loadEntries()        
@@ -48,7 +48,7 @@ class MessageDiskInterface:
         self.db[ip]["pubkey"] = public_key
         self.db[ip]["messages"].append({"enc_message":enc_message,"signature":signature,"send_bool":send})        
         self.f.flush()
-        anonfs_interface("192.168.43.3",9091,restore=False)
+        anonfs_interface("localhost",9091,restore=False)
 
     def verifyDecrypt(self,enc_message,signature,sender_public_key,send:bool):
         '''

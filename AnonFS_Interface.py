@@ -21,13 +21,13 @@ def anonfs_interface(host, port, restore=False):
             else:
                 print("Restore Failed")
         else: 
-            print("Upload Request Received")
+            # print("Upload Request Received")
             s.send(f"upload {file_path}\n".encode())
-            print("Upload Request Completed")
+            # print("Upload Request Completed")
             checksum = s.recv(1024)
-            print("Received Checksum:",checksum)
+            # print("Received Checksum:",checksum)
             # save checksum to file
             with open("checksum.txt", "w") as f:
                 f.write(checksum.decode())
-            print("Checksum Saved")
+            # print("Checksum Saved")
             

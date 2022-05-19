@@ -11,7 +11,8 @@ askey = AnonKeys(file_name="userkey.pickle")
 askey.load_RSA_key()
 mdi = MessageDiskInterface(db,askey.private_key)
 
-sockp = socketpremitives.CommUtils(db=db, askey=askey, mdi=mdi, HOST="192.168.43.3")
+# sockp = socketpremitives.CommUtils(db=db, askey=askey, mdi=mdi, HOST="192.168.43.3")
+sockp = socketpremitives.CommUtils(db=db, askey=askey, mdi=mdi, HOST="qk2x3zg7slhyplmfcxhhhch7zcbok3q7tucgkgg7zol63f7hivudwead.onion")
 
 t = Thread(target=sockp.receiver_function)
 t.start()
