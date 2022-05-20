@@ -1,6 +1,13 @@
+import os
+
+# remove the db file
+if os.path.exists("messages.log"):
+    os.remove("messages.log")
+if os.path.exists("checksum.txt"):
+    os.remove("checksum.txt")
+
 from AnonChat_main import *
 import string
-import os
 import random
 #import RSA
 import traceback
@@ -42,8 +49,6 @@ def perform_benchmark(receiver_url,reciever_public_key):
     # write header in format Time in seconds,Message Size,Message
     f.write("Time in seconds,Message Size,Message\n")
 
-    # remove the db file
-    os.remove("messages.log")
     '''
     Performs the benchmark
     '''
@@ -77,8 +82,9 @@ def perform_benchmark(receiver_url,reciever_public_key):
 
 
 if __name__ == "__main__":
-    key = '''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbd5wIZBn5cnz1mn74WlKo8s0NkvDzLVnFXBaLqlBy4vBx7s6OVD7MGcsTKvg0E7pSoL5A5Eq2BlxgVOse0tlI+dJKQ/uuiyJ7zw3aP08wHs+94oxyMfeS07k+Pf0MLOSn2R1x2lLGdeR3zoLF6KkPDbfTE89ZUaYitSzDAloFB86GnDhbcMwfRcKUHQK0e1HQ1Pz3Xz54+hW1k3KLaEuwyaT8nV6ocAt8SdjmDSLN4jih4QB4hPiFyFLhH4K1wlEls5b8PDVeADNNFUq1KARGPB+gMSmeqC3lIU9Q7C+XLPjkEpLz4jvONg+QVwvxRHhi8+H3n0N+J4xWEYyoeti9'''
-    url = "192.168.8.5"
+    key = '''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDFZNe7E3ruW8//ESTvPDbRoSlZfFU8MDmnhKgA8pufxSyMTm54ApvxK0PHez2h3/cQl1w74neIGUBHko+XodQM00KJc+ZitNzmvY2uHGnHRD4a38huhnq6bG1w+2i6ZvY2Kh08+nWZUb00Psd9yVsyb5mY2AkAwYeIiM0cnzQ5s+KfEoLZpq78yQwvIrbJdL0p6Y/iN2HO9D6O2Sf/z9hTnMdgPAJvOF9kDc3qHCW0YHMx39SUNdjcMLENaM1FMkCvg2HZu348+ISexdvjr9PxZRtj+Do/ZNtWhdHHJTwzTQIoDYICmj56I/ou7GsBjdbjscqE/MvqbpJ+DRvN3Rnh'''
+    url = "qk2x3zg7slhyplmfcxhhhch7zcbok3q7tucgkgg7zol63f7hivudwead.onion"
+    # url = "192.168.43.3"
     perform_benchmark(url,key)
 
 
